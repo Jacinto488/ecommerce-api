@@ -10,8 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Authentic Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+
+// Product Routes
+app.use('/api/products', require('./routes/productRoutes'));
 
 // Test route
 app.get('/', (req, res) => {
