@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
 //Cart Routes
 app.use('/api/carts', require('./routes/cartRoutes'));
 
+//Cart checkout
+app.use('/api/carts', require('./routes/checkoutRoutes')); 
+
 // Swagger setup
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
