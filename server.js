@@ -27,6 +27,9 @@ app.use('/api/carts', require('./routes/cartRoutes'));
 //Cart checkout
 app.use('/api/carts', require('./routes/checkoutRoutes')); 
 
+//Order Routes
+app.use('/api/orders', require('./routes/orderRoutes'));
+
 // Swagger setup
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
