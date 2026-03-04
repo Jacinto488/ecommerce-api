@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -9,6 +9,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // Test route
 app.get('/', (req, res) => {
