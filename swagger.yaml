@@ -1,0 +1,290 @@
+openapi: 3.0.0
+info:
+  title: E-Commerce API
+  version: 1.0.0
+  description: Backend API for E-Commerce Project
+
+servers:
+  - url: http://localhost:3000/api
+
+tags:
+  - name: Auth
+  - name: Products
+  - name: Cart
+  - name: Checkout
+  - name: Orders
+
+paths:
+
+  #################################
+  # AUTH
+  #################################
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Invalid input
+
+  /auth/login:
+    post:
+      summary: Login user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid credentials
+
+  #################################
+  # PRODUCTS
+  #################################
+
+  /products:
+    get:
+      summary: Get all products
+      tags: [Products]
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+    post:
+      summary: Create a new product
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Product created
+
+  /products/{id}:
+    get:
+      summary: Get product by ID
+      tags: [Products]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product details
+        '404':
+          description: Product not found
+
+    put:
+      summary: Update product
+      tags: [Products]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Product updated
+
+    delete:
+      summary: Delete product
+      tags: [Products]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product deleted
+
+  #################################
+  # CART
+  #################################
+
+  /carts/{userId}:
+    get:
+      summary: Get user's cart
+      tags: [Cart]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cart details
+
+    post:
+      summary: Add item to cart
+      tags: [Cart]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemInput'
+      responses:
+        '201':
+          description: Item added to cart
+
+  #################################
+  # CHECKOUT
+  #################################
+
+  /carts/{cartId}/checkout:
+    post:
+      summary: Checkout cart
+      tags: [Checkout]
+      parameters:
+        - in: path
+          name: cartId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Checkout successful
+        '400':
+          description: Cart is empty
+        '404':
+          description: Cart not found
+
+  #################################
+  # ORDERS
+  #################################
+
+  /orders/user/{userId}:
+    get:
+      summary: Get all orders for a user
+      tags: [Orders]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user orders
+
+  /orders/{orderId}:
+    get:
+      summary: Get order details
+      tags: [Orders]
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order details
+        '404':
+          description: Order not found
+
+
+#################################################
+# COMPONENT SCHEMAS
+#################################################
+
+components:
+  schemas:
+
+    UserInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        password:
+          type: string
+          example: password123
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Fender Jazz Bass
+        description:
+          type: string
+          example: Professional 4-string bass guitar
+        price:
+          type: number
+          format: float
+          example: 1299.99
+
+    ProductInput:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+
+    CartItemInput:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: integer
+          example: 1
+        quantity:
+          type: integer
+          example: 2
