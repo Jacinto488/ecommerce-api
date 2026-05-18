@@ -1,4 +1,4 @@
-const pool = require('../server/config/db');
+const pool = require('../config/db');
 
 // Get a user's cart
 exports.getCart = async (req, res) => {

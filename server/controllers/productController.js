@@ -1,4 +1,4 @@
-const pool = require('../server/config/db');
+const pool = require('../config/db');
 
 // Create product
 exports.createProduct = async (req, res) => {

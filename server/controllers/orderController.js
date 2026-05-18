@@ -1,4 +1,4 @@
-const pool = require('../server/config/db');
+const pool = require('../config/db');
 
 // Get all orders for a specific user
 exports.getOrders = async (req, res) => {

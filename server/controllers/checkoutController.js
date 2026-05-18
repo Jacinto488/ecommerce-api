@@ -1,4 +1,4 @@
-const pool = require('../server/config/db');
+const pool = require('../config/db');
 
 exports.checkoutCart = async (req, res) => {
   try {
