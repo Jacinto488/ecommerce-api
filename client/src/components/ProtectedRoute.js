@@ -2,7 +2,9 @@ import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ children }) {
 
-  const token = localStorage.getItem('token');
+  const token =
+    sessionStorage.getItem('token') ||
+    sessionStorage.getItem('google_token');
 
   if (!token) {
     return <Navigate to="/login" />;

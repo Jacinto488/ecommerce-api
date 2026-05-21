@@ -1,28 +1,69 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navbar() {
-  const token = localStorage.getItem('token');
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+  const navigate = useNavigate();
+
+  // Check if logged in
+  const token =
+    sessionStorage.getItem('token') ||
+    sessionStorage.getItem('google_token');
+
+  // Logout function
+  const handleLogout = () => {
+
+    sessionStorage.removeItem('token');
+
+    sessionStorage.removeItem('google_token');
+
+    sessionStorage.removeItem('user');
+
+    alert('Logged out successfully');
+
+    navigate('/login');
+
+    // Refresh navbar state
+    window.location.reload();
   };
 
   return (
-    <nav style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>
-      <Link to="/">Home</Link> |{' '}
-      <Link to="/products">Products</Link> |{' '}
-      <Link to="/cart">Cart</Link> |{' '}
-      <Link to="/orders">Orders</Link> |{' '}
-      
-      {!token ? (
+
+    <nav
+      style={{
+        padding: '15px',
+        borderBottom: '1px solid #ccc',
+        marginBottom: '20px',
+        display: 'flex',
+        gap: '15px'
+      }}
+    >
+
+      <Link to="/">Home</Link>
+
+      <Link to="/products">Products</Link>
+
+      {/* Logged OUT */}
+      {!token && (
         <>
-          <Link to="/login">Login</Link> |{' '}
+          <Link to="/login">Login</Link>
+
           <Link to="/register">Register</Link>
         </>
-      ) : (
-        <button onClick={logout}>Logout</button>
       )}
+
+      {/* Logged IN */}
+      {token && (
+        <>
+          <Link to="/cart">Cart</Link>
+
+          <Link to="/orders">Orders</Link>
+
+          <button onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      )}
+
     </nav>
   );
 }
